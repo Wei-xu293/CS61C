@@ -1,9 +1,18 @@
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-8.
-9.
+1. **Set program arguments:**
+Use `set args <arg1> <arg2>` before running, or pass them directly when launching with `run <arg1> <arg2>`.
+2. **Create a breakpoint:**
+Use `break` (or `b`) followed by a line number, function name, or file location (e.g., `b main`, `b 42`, or `b main.c:42`).
+3. **Execute the next line (step over function calls):**
+Use `next` (or `n`).
+4. **Step into a function call:**
+Use `step` (or `s`).
+5. **Continue execution after stopping:**
+Use `continue` (or `c`).
+6. **Print a variable or expression:**
+Use `print` (or `p`) followed by the variable or expression (e.g., `p my_var` or `p 1+2`).
+7. **Display a variable automatically after every step:**
+Use `display <variable>` (e.g., `display my_var`). To clear auto-displays later, use `undisplay <display-number>`.
+8. **Show all local variables in the current function:**
+Use `info locals`. (To show the function's input parameters as well, use `info args`).
+9. **Quit GDB:**
+Use `quit` (or `q`), or press `Ctrl+D`.
