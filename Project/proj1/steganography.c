@@ -7,7 +7,7 @@
 ** AUTHOR:      Dan Garcia  -  University of California at Berkeley
 **              Copyright (C) Dan Garcia, 2020. All rights reserved.
 **				Justin Yokota - Starter Code
-**				YOUR NAME HERE
+**				Wei Xu
 **
 ** DATE:        2020-08-23
 **
@@ -21,13 +21,36 @@
 //Determines what color the cell at the given row/col should be. This should not affect Image, and should allocate space for a new Color.
 Color *evaluateOnePixel(Image *image, int row, int col)
 {
-	//YOUR CODE HERE
+	Color *c = (Color *)malloc(sizeof(Color));
+	if (!c) return NULL;
+	if (image->image[row][col].B & (1 << 0)) {
+		c->R = c->G = c->B = 255;
+	} else {
+		c->R = c->G = c->B = 0;
+	}
+	return c;
 }
 
 //Given an image, creates a new image extracting the LSB of the B channel.
 Image *steganography(Image *image)
 {
-	//YOUR CODE HERE
+	if (!image) return NULL;
+	Image *new_img = (Image *)malloc(sizeof(Image));
+	if (!new_img) return NULL;
+	new_img->rows = image->rows;
+	new_img->cols = image->cols;
+	new_img->image = (Color **)malloc(image->rows * sizeof(Color *));
+	for (uint32_t i = 0; i < image->rows; i++) {
+		new_img->image[i] = (Color *)malloc(image->cols * sizeof(Color));
+		for (uint32_t j = 0; j < image->cols; j++) {
+			Color *c = evaluateOnePixel(image, i, j);
+			if (c) {
+				new_img->image[i][j] = *c; // Copy data
+				free(c);                   // Free heap allocation
+			}
+		}
+	}
+	return new_img;
 }
 
 /*
@@ -45,5 +68,18 @@ Make sure to free all memory before returning!
 */
 int main(int argc, char **argv)
 {
-	//YOUR CODE HERE
+	if (argc < 2) {
+		return -1;
+	}
+	Image *img = readData(argv[1]);
+	if (!img) return -1;
+	Image *steg = steganography(img);
+	if (!steg) {
+        freeImage(img);
+        return -1;
+    }
+	writeData(steg);
+	freeImage(img);
+	freeImage(steg);
+	return 0;
 }
